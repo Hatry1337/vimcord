@@ -90,7 +90,7 @@ def update():
                         details=_details, 
                         small_text=file_extension,
                         large_text=vim_ver,
-                        large_imaga="vim", 
+                        large_image="vim", 
                         small_image = thumbnails[file_extension], 
                         start = e)
         except:
