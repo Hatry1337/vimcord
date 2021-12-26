@@ -79,7 +79,7 @@ def update():
 
     file_name =  vim.eval("expand('%:t')")
     file_extension =   vim.eval("expand('%:e')")
-    workspace_dir = vim.eval("expand(':p:h:t')")
+    workspace_dir = vim.eval("expand('%:p:h:t')")
 
     _state = "Editing {}".format(file_name) 
     _details = "Workspace {}".format(workspace_dir) 
