@@ -44,9 +44,11 @@ thumbnails = {
 # Initialize RPC connection
 import os, subprocess,vim, sys, time
 import psutil
+import subprocess
 
 plugin_path = vim.eval("g:vimrpcdir")
 python_module_path = os.path.abspath('%s' % (plugin_path))
+vim_ver = subprocess.run(["vim", "--version"], capture_output=True, text=True).stdout.split("\n")[0]
 
 sys.path.append(python_module_path)
 
@@ -77,19 +79,25 @@ def update():
 
     file_name =  vim.eval("expand('%:t')")
     file_extension =   vim.eval("expand('%:e')")
-    workspace_dir = vim.eval("expand('%:p:h:t')")
+    workspace_dir = vim.eval("expand(':p:h:t')")
 
     _state = "Editing {}".format(file_name) 
     _details = "Workspace {}".format(workspace_dir) 
 
     if file_extension in thumbnails:
         try:
-            RPC.update(state=_state, details=_details, large_image = thumbnails[file_extension],   start = e)
+            RPC.update( state=_state, 
+                        details=_details, 
+                        small_text=file_extension,
+                        large_text=vim_ver,
+                        large_imaga="vim", 
+                        small_image = thumbnails[file_extension], 
+                        start = e)
         except:
             RPC.close()
     else:
         try:
-            RPC.update(state=_state, details=_details, large_image="vim", start=e)
+            RPC.update(state=_state, details=_details, large_text=vim_ver, large_image="vim", start=e)
         except:
             RPC.close()
 en
@@ -99,4 +107,3 @@ autocmd BufNewFile  * :python3 update()
 autocmd InsertEnter * :python3 update()
 autocmd BufReadPre  * :python3 update()
 autocmd VimLeavePre * :python3 kill()
-
